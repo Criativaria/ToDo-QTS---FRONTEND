@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ⬆⬆ RESET CSS ⬆⬆ */
+
+* {
+    font-family: "Roboto Mono", monospace;
+}
+
+.Task {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    background-color: #fcffeb;
+    width: 550px;
+    height: 60px;
+    margin: 20px;
+    border-radius: 30px;
+}
+
+
+.buttonNewTask {
+    background-color: #1b1a1a;
+    border: none;
+    outline: none;
+}
+
+/* TASK */
+
+.motionWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column-reverse;
+    width: 750px;
+}
+
+/* NEW TASK */
+
+.Text,
+.inputTask {
+    color: #1b1a1a;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 10px;
+    background-color: #fcffeb;
+    width: 550px;
+    height: 60px;
+    margin: 20px;
+    border-radius: 30px;
+}
+
+.closeInput {
+    display: none;
+}
+
+.inputTask,
+.inputButton {
+    background-color: #fcffeb;
+    border: none;
+    outline: none;
+}
