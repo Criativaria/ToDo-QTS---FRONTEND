@@ -23,21 +23,21 @@ const variantBox: Variants = {
   },
 };
 
-export function SignUp(props: SignUpProps) {
+export function SignIn(props: SignUpProps) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
 
   const handdleClickToggle = () => {
-    props.setToggleSignUp(false);
-    props.setToggleSignIn(true);
+    props.setToggleSignIn(false);
+    props.setToggleSignUp(true);
     return props.toggleSignIn, props.toggleSignUp;
   };
 
   const handdleClickClose = () => {
-    props.setToggleSignUp(false);
+    props.setToggleSignIn(false);
 
-    return props.toggleSignUp;
+    return props.toggleSignIn;
   };
 
   const isEmailOk = (email: string) => {
@@ -61,14 +61,14 @@ export function SignUp(props: SignUpProps) {
     if (hasMinLength == true && hasUpperCase == true && hasLowerCase == true) {
       return true;
     } else {
-      alert("a senha deve ter maiusculas e minusculas, e no minimo 4 letras");
+      alert("informações incorretas");
       return false;
     }
   };
 
   const Verification = (email: string, senha: string, nome: string) => {
     if (isEmailOk(email) == true && isSenhaOk(senha) == true) {
-      alert(`boas vindas, ${nome} sua conta foi criada com sucesso!!`);
+      alert(`boas vindas de volta, ${nome} `);
     }
   };
 
@@ -85,9 +85,9 @@ export function SignUp(props: SignUpProps) {
         <div className="titulosECloseSign">
           <div className="divsecreta"></div>
           <div className="titulosSign">
-            <h1 className="tituloSignUp">Criar Conta</h1>
+            <h1 className="tituloSignUp">Login</h1>
             <p className="subTittleSignUp" onClick={handdleClickToggle}>
-              ja tem conta?
+              ainda não tem conta?
             </p>
           </div>
 

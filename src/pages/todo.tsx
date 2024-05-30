@@ -5,10 +5,12 @@ import { useState } from "react";
 import "../App.css";
 import { SignUp } from "../components/signup";
 import { AnimatePresence } from "framer-motion";
+import { SignIn } from "../components/singIn";
 
 export function ToDoPage() {
   const [showNewTask, setShowNewTask] = useState(false);
-  const [toggleSign, setToggleSign] = useState(false);
+  const [toggleSignUp, setToggleSignUp] = useState(false);
+  const [toggleSignIn, setToggleSignIn] = useState(false);
 
   const handleNewTask = () => {
     setShowNewTask(false);
@@ -18,11 +20,12 @@ export function ToDoPage() {
     setShowNewTask(true);
   };
 
-  const setToggleSignFunction = (value: boolean) => {
-    setToggleSign(value);
+  const setToggleSignUpFunction = (value: boolean) => {
+    setToggleSignUp(value);
   };
-
-  console.log(toggleSign);
+  const setToggleSignInFunction = (value: boolean) => {
+    setToggleSignIn(value);
+  };
 
   return (
     <>
@@ -38,15 +41,28 @@ export function ToDoPage() {
         </Line>
         <div>
           <AnimatePresence>
-            {toggleSign && (
+            {toggleSignUp && (
               <SignUp
-                toggleSign={toggleSign}
-                setToggleSign={setToggleSignFunction}
+                toggleSignUp={toggleSignUp}
+                setToggleSignUp={setToggleSignUpFunction}
+                toggleSignIn={toggleSignIn}
+                setToggleSignIn={setToggleSignInFunction}
+              />
+            )}
+            {toggleSignIn && (
+              <SignIn
+                toggleSignIn={toggleSignIn}
+                setToggleSignIn={setToggleSignInFunction}
+                toggleSignUp={toggleSignUp}
+                setToggleSignUp={setToggleSignUpFunction}
               />
             )}
           </AnimatePresence>
         </div>
-        <button onClick={() => setToggleSign(true)} className="buttonUserToDo">
+        <button
+          onClick={() => setToggleSignUp(true)}
+          className="buttonUserToDo"
+        >
           <CircleUserRound size={50} color="#fcffeb" strokeWidth={1.5} />
         </button>
       </Wrapper>
