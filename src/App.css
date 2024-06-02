@@ -132,6 +132,9 @@ body {
     font-size: 15px;
     font-weight: 600;
     font-style: italic;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 .formSignUp {

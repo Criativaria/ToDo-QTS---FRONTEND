@@ -3,6 +3,8 @@
 import { X } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
+import { createUser } from "../api/user/createUser";
+import axios from "axios";
 
 type SignUpProps = {
   toggleSignIn: boolean;
@@ -24,7 +26,7 @@ const variantBox: Variants = {
 };
 
 export function SignUp(props: SignUpProps) {
-  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
 
@@ -40,38 +42,19 @@ export function SignUp(props: SignUpProps) {
     return props.toggleSignUp;
   };
 
-  const isEmailOk = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const regexteste = regex.test(email);
-
-    console.log(regexteste);
-    if (regexteste === false) {
-      alert("informações incorretas");
-    }
-    if (email === "") {
-      alert("informações incorretas");
-    }
-    return true;
-  };
-  const isSenhaOk = (senha: string) => {
-    const hasMinLength = senha.length >= 4;
-    const hasUpperCase = /[A-Z]/.test(senha);
-    const hasLowerCase = /[a-z]/.test(senha);
-
-    if (hasMinLength == true && hasUpperCase == true && hasLowerCase == true) {
-      return true;
-    } else {
-      alert("a senha deve ter maiusculas e minusculas, e no minimo 4 letras");
-      return false;
+  const requestCreateUser = async () => {
+    try {
+      setSenha("");
+      setNickname("");
+      setNome("");
+      await createUser({ nickname, senha, nome });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data.message);
+        console.log(error);
+      }
     }
   };
-
-  const Verification = (email: string, senha: string, nome: string) => {
-    if (isEmailOk(email) == true && isSenhaOk(senha) == true) {
-      alert(`boas vindas, ${nome} sua conta foi criada com sucesso!!`);
-    }
-  };
-
   return (
     <>
       <motion.div
@@ -87,10 +70,9 @@ export function SignUp(props: SignUpProps) {
           <div className="titulosSign">
             <h1 className="tituloSignUp">Criar Conta</h1>
             <p className="subTittleSignUp" onClick={handdleClickToggle}>
-              ja tem conta?
+              já tem conta?
             </p>
           </div>
-
           <button className="buttonCloseSign" onClick={handdleClickClose}>
             <X size={30} color="#1b1a1a" strokeWidth={2.5} />
           </button>
@@ -100,9 +82,9 @@ export function SignUp(props: SignUpProps) {
             <input
               type="text"
               className="input"
-              placeholder="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              placeholder="nickname"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
             />
           </div>
           <div className="divTextoEInput">
@@ -124,10 +106,7 @@ export function SignUp(props: SignUpProps) {
             />
           </div>
         </div>
-        <button
-          className="sendSign"
-          onClick={() => Verification(email, senha, nome)}
-        >
+        <button className="sendSign" onClick={() => requestCreateUser()}>
           enviar
         </button>
       </motion.div>

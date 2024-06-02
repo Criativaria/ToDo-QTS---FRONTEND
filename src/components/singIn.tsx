@@ -3,6 +3,8 @@
 import { X } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
+import { loginUser } from "../api/user/login";
+import axios from "axios";
 
 type SignUpProps = {
   toggleSignIn: boolean;
@@ -24,9 +26,8 @@ const variantBox: Variants = {
 };
 
 export function SignIn(props: SignUpProps) {
-  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [senha, setSenha] = useState("");
-  const [nome, setNome] = useState("");
 
   const handdleClickToggle = () => {
     props.setToggleSignIn(false);
@@ -40,35 +41,16 @@ export function SignIn(props: SignUpProps) {
     return props.toggleSignIn;
   };
 
-  const isEmailOk = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const regexteste = regex.test(email);
-
-    console.log(regexteste);
-    if (regexteste === false) {
-      alert("informações incorretas");
-    }
-    if (email === "") {
-      alert("informações incorretas");
-    }
-    return true;
-  };
-  const isSenhaOk = (senha: string) => {
-    const hasMinLength = senha.length >= 4;
-    const hasUpperCase = /[A-Z]/.test(senha);
-    const hasLowerCase = /[a-z]/.test(senha);
-
-    if (hasMinLength == true && hasUpperCase == true && hasLowerCase == true) {
-      return true;
-    } else {
-      alert("informações incorretas");
-      return false;
-    }
-  };
-
-  const Verification = (email: string, senha: string, nome: string) => {
-    if (isEmailOk(email) == true && isSenhaOk(senha) == true) {
-      alert(`boas vindas de volta, ${nome} `);
+  const requestLoginUser = async () => {
+    try {
+      setSenha("");
+      setNickname("");
+      await loginUser({ nickname, senha });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data.message);
+        console.log(error);
+      }
     }
   };
 
@@ -100,9 +82,9 @@ export function SignIn(props: SignUpProps) {
             <input
               type="text"
               className="input"
-              placeholder="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              placeholder="nickname"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
             />
           </div>
           <div className="divTextoEInput">
@@ -114,20 +96,8 @@ export function SignIn(props: SignUpProps) {
               onChange={(event) => setSenha(event.target.value)}
             />
           </div>
-          <div className="divTextoEInput">
-            <input
-              type="text"
-              className="input"
-              placeholder="nome"
-              value={nome}
-              onChange={(event) => setNome(event.target.value)}
-            />
-          </div>
         </div>
-        <button
-          className="sendSign"
-          onClick={() => Verification(email, senha, nome)}
-        >
+        <button className="sendSign" onClick={() => requestLoginUser()}>
           enviar
         </button>
       </motion.div>
