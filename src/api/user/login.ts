@@ -5,7 +5,11 @@ export type loginUserRequest = {
     senha: string
 }
 export type loginUserResponse = {
-    token: string
+    user: User
+}
+export type User = {
+    nickname: string,
+    name: string
 }
 
 export async function loginUser(payload: loginUserRequest) {

@@ -3,7 +3,7 @@
 import { X } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
-import { loginUser } from "../api/user/login";
+import { loginUser, User } from "../api/user/login";
 import axios from "axios";
 
 type SignUpProps = {
@@ -13,8 +13,7 @@ type SignUpProps = {
   toggleSignUp: boolean;
   setToggleSignUp: (value: boolean) => void;
 
-  onLogin: () => void;
-  getName: (getUserName: string) => void;
+  onLogin: (getUser: User) => void;
 };
 
 const variantBox: Variants = {
@@ -49,11 +48,8 @@ export function SignIn(props: SignUpProps) {
       setSenha("");
       setNickname("");
       const login = await loginUser({ nickname, senha });
-      props.onLogin();
       handdleClickClose();
-      if (login) {
-        // props.getName(login.userNome);
-      }
+      props.onLogin(login.user);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         alert(error.response?.data.message);
