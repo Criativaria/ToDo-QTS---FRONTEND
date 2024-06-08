@@ -5,6 +5,7 @@ import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 import { createUser } from "../api/user/createUser";
 import axios from "axios";
+import { loginUser } from "../api/user/login";
 
 type SignUpProps = {
   toggleSignIn: boolean;
@@ -38,7 +39,6 @@ export function SignUp(props: SignUpProps) {
 
   const handdleClickClose = () => {
     props.setToggleSignUp(false);
-
     return props.toggleSignUp;
   };
 
@@ -47,7 +47,12 @@ export function SignUp(props: SignUpProps) {
       setSenha("");
       setNickname("");
       setNome("");
-      await createUser({ nickname, senha, nome });
+      const create = await createUser({ nickname, senha, nome });
+      if (create) {
+        loginUser({ nickname, senha });
+        handdleClickClose();
+        return create;
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         alert(error.response?.data.message);
@@ -83,6 +88,8 @@ export function SignUp(props: SignUpProps) {
               type="text"
               className="input"
               placeholder="nickname"
+              minLength={4}
+              maxLength={15}
               value={nickname}
               onChange={(event) => setNickname(event.target.value)}
             />
@@ -92,6 +99,8 @@ export function SignUp(props: SignUpProps) {
               type="text"
               className="input"
               placeholder="senha"
+              minLength={4}
+              maxLength={20}
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
             />
@@ -101,6 +110,8 @@ export function SignUp(props: SignUpProps) {
               type="text"
               className="input"
               placeholder="nome"
+              minLength={4}
+              maxLength={20}
               value={nome}
               onChange={(event) => setNome(event.target.value)}
             />

@@ -11,12 +11,8 @@ export type createUseResponse = {
     nome: string
 }
 
-
 export async function createUser(payload: createUserRequest) {
 
     const response = await request.post<createUseResponse>('/user', payload)
-
-    console.log(response.data);
-
     return response.data;
 }

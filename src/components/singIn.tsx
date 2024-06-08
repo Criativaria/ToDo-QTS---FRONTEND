@@ -12,6 +12,9 @@ type SignUpProps = {
 
   toggleSignUp: boolean;
   setToggleSignUp: (value: boolean) => void;
+
+  onLogin: () => void;
+  getName: (getUserName: string) => void;
 };
 
 const variantBox: Variants = {
@@ -45,7 +48,12 @@ export function SignIn(props: SignUpProps) {
     try {
       setSenha("");
       setNickname("");
-      await loginUser({ nickname, senha });
+      const login = await loginUser({ nickname, senha });
+      props.onLogin();
+      handdleClickClose();
+      if (login) {
+        // props.getName(login.userNome);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         alert(error.response?.data.message);

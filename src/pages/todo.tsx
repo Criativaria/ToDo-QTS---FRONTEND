@@ -1,16 +1,20 @@
 import { CirclePlus, CircleUserRound } from "lucide-react";
 import styled from "styled-components";
-import { Tasks } from "../components/tasks";
+import { Items, Tasks } from "../components/tasks";
 import { useState } from "react";
 import "../App.css";
 import { SignUp } from "../components/signup";
 import { AnimatePresence } from "framer-motion";
 import { SignIn } from "../components/singIn";
+import { getTask } from "../api/task/getTask";
 
 export function ToDoPage() {
   const [showNewTask, setShowNewTask] = useState(false);
   const [toggleSignUp, setToggleSignUp] = useState(false);
   const [toggleSignIn, setToggleSignIn] = useState(false);
+  const [initialTasks, setInitialTasks] = useState<Items[]>([]);
+
+  const [userName, setUserName] = useState("");
 
   const handleNewTask = () => {
     setShowNewTask(false);
@@ -27,6 +31,21 @@ export function ToDoPage() {
     setToggleSignIn(value);
   };
 
+  const handleLogin = async () => {
+    const tasks = await getTask();
+    const items = tasks.map((task) => ({
+      id: task.id,
+      text: task.text,
+    }));
+    setInitialTasks(items);
+  };
+
+  const getName = (getUserName: string) => {
+    if (getUserName) {
+      setUserName(getUserName);
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -37,7 +56,11 @@ export function ToDoPage() {
           </button>
         </Title>
         <Line>
-          <Tasks showNewTask={showNewTask} onNewTask={handleNewTask} />
+          <Tasks
+            showNewTask={showNewTask}
+            onNewTask={handleNewTask}
+            initialTasks={initialTasks}
+          />
         </Line>
         <div>
           <AnimatePresence>
@@ -55,6 +78,8 @@ export function ToDoPage() {
                 setToggleSignIn={setToggleSignInFunction}
                 toggleSignUp={toggleSignUp}
                 setToggleSignUp={setToggleSignUpFunction}
+                onLogin={handleLogin}
+                getName={getName}
               />
             )}
           </AnimatePresence>
@@ -63,6 +88,7 @@ export function ToDoPage() {
           onClick={() => setToggleSignUp(true)}
           className="buttonUserToDo"
         >
+          <p>{userName}</p>
           <CircleUserRound size={50} color="#fcffeb" strokeWidth={1.5} />
         </button>
       </Wrapper>

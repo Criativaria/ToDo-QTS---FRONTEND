@@ -10,8 +10,6 @@ export type loginUserResponse = {
 
 export async function loginUser(payload: loginUserRequest) {
     const response = await request.post<loginUserResponse>('/user/login', payload)
-    console.log(response.data)
-
     return response.data;
 
 }

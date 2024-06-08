@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { TaskAnimation } from "./taskAnimation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NewTask } from "./newTask";
 import "../App.css";
+import { DeleteTask } from "../api/task/deleteTask";
 
-type Items = {
+export type Items = {
   id: string;
   text: string;
 };
@@ -12,19 +13,26 @@ type Items = {
 type TaskProps = {
   onNewTask: () => void;
   showNewTask: boolean;
+
+  initialTasks: Items[];
 };
 
 export function Tasks(props: TaskProps) {
   const containerRef = useRef(null);
 
-  const [items, setItems] = useState<Items[]>([]);
+  const [items, setItems] = useState<Items[]>(props.initialTasks);
 
-  const handleNewTask = (taskName: string) => {
+  useEffect(() => {
+    setItems(props.initialTasks);
+  }, [props.initialTasks]);
+
+  const handleNewTask = (taskName: string, id: string) => {
     props.onNewTask();
-    setItems([...items, { id: crypto.randomUUID(), text: taskName }]);
+    setItems([...items, { id, text: taskName }]);
   };
 
-  const HanddleRemoveItem = (id: string) => {
+  const HanddleRemoveItem = async (id: string) => {
+    await DeleteTask({ taskId: id });
     const newItems = items.filter((item: { id: string }) => item.id !== id);
     setItems(newItems);
   };

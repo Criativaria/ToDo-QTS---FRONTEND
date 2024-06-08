@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { createTask } from "../api/task/createTask";
+import axios from "axios";
 
 type NewTaskProps = {
-  handleNewTask: (taskName: string) => void;
+  handleNewTask: (taskName: string, id: string) => void;
 };
 
 export function NewTask(props: NewTaskProps) {
@@ -13,11 +15,25 @@ export function NewTask(props: NewTaskProps) {
     setInputInfo(e.target.value);
   };
 
-  const handleClick = () => {
-    props.handleNewTask(inputInfo);
-    setInputInfo("");
+  const handleClick = async () => {
+    const task = await requestCreateTask();
+    if (task) {
+      props.handleNewTask(task.text, task.id);
+      setInputInfo("");
+    }
   };
 
+  const requestCreateTask = async () => {
+    try {
+      setInputInfo("");
+      return await createTask({ text: inputInfo });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(error.response?.data.message);
+        console.log(error);
+      }
+    }
+  };
   return (
     <>
       <div className="inputWrapper">
