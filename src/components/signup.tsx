@@ -96,7 +96,7 @@ export function SignUp(props: SignUpProps) {
           </div>
           <div className="divTextoEInput">
             <input
-              type="text"
+              type="password"
               className="input"
               placeholder="senha"
               minLength={4}
